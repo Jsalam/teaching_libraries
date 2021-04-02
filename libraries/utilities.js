@@ -1,12 +1,14 @@
 /**
  * This function takes a one-dimensional array and returns the element that would be 
  * placed in a given row and column coordinates
- * @param arr The array
- * @param col the column number
- * @param row the row number
- * @param matrixWidth the total number of columns in the array
+ * @param {array} arr The array
+ * @param {number} col the column number
+ * @param {number} row the row number
+ * @param {number} matrixWidth the total number of columns in the array
+ * @returns the element in the array
  */
 function getElementFromOneDimArray(arr, col, row, matrixWidth) {
+    let result;
     if (col >= matrixWidth) {
         console.log("Column index exceeds the matrix width");
     } else if (row >= (arr.length / matrixWidth)) {
@@ -19,26 +21,71 @@ function getElementFromOneDimArray(arr, col, row, matrixWidth) {
         if (arr[arrayPos] == undefined) {
             console.log("Index " + arrayPos + " is out of bounds. No element in position col: " + col + ", row: " + row);
         } else {
-            return arr[arrayPos];
+            result = arr[arrayPos];
         }
     }
+    return result;
 }
 
-/** This function returns the element from the two-dimensional arrat situated at the given coordinates 
- * @param arr the two-dimensional array
- * @param col the column
- * @param row the row
+/** This function returns the element from the two-dimensional array situated at the given coordinates 
+ * @param {array} arr the two-dimensional array
+ * @param {number} col the column
+ * @param {number} row the row
  * @return the element in the array
  */
 function getElementFromTwoDimArray(arr, col, row) {
     return arr[col][row];
 }
 
+/**
+ * This function takes a one-dimensional array and returns an array of elements placed in the given column index 
+ * @param {array} arr the one-dimensional array
+ * @param {number} col the column to be retrieved
+ * @param {number} matrixWidth the width of the matrix
+ * @returns {array} an array with the elements in the requested column
+ */
+function getColumnFromOneDimArray(arr, col, matrixWidth) {
+    let result = [];
+    let nRows = arr.length / matrixWidth;
+    if (col < arr.length) {
+        for (let i = 0; i < nRows; i++) {
+            let temp = getElementFromOneDimArray(arr, col, i, matrixWidth);
+            if (temp) result.push(temp);
+        }
+    } else {
+        console.log("The column value is greater than the array length");
+    }
+    return result;
+}
+
+/**
+ * This function takes a one-dimensional array and returns an array of elements placed in the given row index
+ * @param {array} arr the one-dimensional array
+ * @param {number} row the row the be retrieved
+ * @param {number} matrixWidth the width of the matrix
+ * @returns {array} an array of elements
+ */
+function getRowFromOneDimArray(arr, row, matrixWidth) {
+    let result = [];
+    let nRows = arr.length / matrixWidth;
+    if (row < nRows) {
+        for (let i = 0; i < matrixWidth; i++) {
+            let temp = getElementFromOneDimArray(arr, i, row, matrixWidth);
+            if (temp) {
+                result.push(temp);
+            }
+        }
+    } else {
+        console.log("The row index is greater than the max posible number of rows");
+    }
+    return result;
+}
+
 
 /**
  * Takes a one-dimensional array and returns a new two-dimensional array with a given number of columns
- * @param {array} arr the one dimensional array
- * @param {integer} cols the number of columns in the two-simensional output
+ * @param {array} arr the one-dimensional array
+ * @param {integer} cols the number of columns in the two-dimensional output
  * @return {array} the two-dimensional array
  */
 function fromOneDtoTwoD(arr, cols) {
@@ -64,7 +111,8 @@ function fromOneDtoTwoD(arr, cols) {
 
 /**
  * Takes a two-dimensional array and returns a new one-dimensional array
- * @param {array} arr the one-diemnsional array to be transfromed
+ * @param {array} arr the one-dimensional array to be transformed
+ * @returns {array} the new two-dimensional array
  */
 function fromTwoDtoOneD(arr) {
     let rtn = [];
@@ -81,11 +129,11 @@ function fromTwoDtoOneD(arr) {
  * Gets four contiguous elements from the one dimensional array. The anchor element is at the 
  * col and row intersection. The remaining three are on the right, right-lower, and lower of the
  * anchor.
- * @param arr the one-dimensional array
- * @param col the column index
- * @param row the row index
- * @param matrixWidth the matrix row lenght
- * @return An array with elements orders as follows: anchor, right, lower-right, lower 
+ * @param {array} arr the one-dimensional array
+ * @param {number} col the column index
+ * @param {number} row the row index
+ * @param {number} matrixWidth the matrix row length
+ * @return {array} An array with elements orders as follows: anchor, right, lower-right, lower 
  */
 function getQuad(arr, col, row, matrixWidth) {
 
@@ -104,14 +152,14 @@ function getQuad(arr, col, row, matrixWidth) {
         let nextParticle = arr[currentIndex + 1];
 
 
-        /** Drawing horizontal lines
-        This draws lines from one particle to the next, but skips the line between the last 
-        particle in a row and the first one in the following row. This line is tricky. I am 
-        comparing the current index with the higher index of the row. But i am shifting the index 
-        1 value and the row index 1 width step because I have issues comparing the index and the 
-        row with when both have values of 0.
-        There might be a better way to do this.
-        */
+        //Drawing horizontal lines
+        //This draws lines from one particle to the next, but skips the line between the last 
+        //particle in a row and the first one in the following row. This line is tricky. I am 
+        //comparing the current index with the higher index of the row. But i am shifting the index 
+        //1 value and the row index 1 width step because I have issues comparing the index and the 
+        //row with when both have values of 0.
+        //There might be a better way to do this.
+
         //  console.log((matrixWidth * row) + matrixWidth);
         uL = particle;
         if (currentIndex + 1 < (matrixWidth * row) + matrixWidth) {
@@ -120,11 +168,11 @@ function getQuad(arr, col, row, matrixWidth) {
             uR = nextParticle;
         }
 
-        /**Drawing vertical lines
-        In order to get the index of the particle below the current particle I increase the current index 
-        by the width. But to prevent exceeding the value of arr.length, the boolean condition 
-        sets a restriction: only retrieve arr when particleIndexBelow is less than the array length.
-        */
+        //Drawing vertical lines
+        //In order to get the index of the particle below the current particle I increase the current index 
+        //by the width. But to prevent exceeding the value of arr.length, the boolean condition 
+        //sets a restriction: only retrieve arr when particleIndexBelow is less than the array length.
+
         let particleIndexBelow = currentIndex + matrixWidth;
 
         let nextParticleIndexBelow = particleIndexBelow + 1;

@@ -150,37 +150,19 @@ function getQuad(arr, col, row, matrixWidth) {
         let nextParticle = arr[currentIndex + 1];
 
 
-        //Drawing horizontal lines
-        //This draws lines from one particle to the next, but skips the line between the last 
-        //particle in a row and the first one in the following row. This line is tricky. I am 
-        //comparing the current index with the higher index of the row. But i am shifting the index 
-        //1 value and the row index 1 width step because I have issues comparing the index and the 
-        //row with when both have values of 0.
-        //There might be a better way to do this.
-
-        //  console.log((matrixWidth * row) + matrixWidth);
+        //Horizontal
         uL = particle;
         if (currentIndex + 1 < (matrixWidth * row) + matrixWidth) {
-            // line(particle.x, particle.y, nextParticle.x, nextParticle.y);
-            //uL = particle;
             uR = nextParticle;
         }
 
-        //Drawing vertical lines
-        //In order to get the index of the particle below the current particle I increase the current index 
-        //by the width. But to prevent exceeding the value of arr.length, the boolean condition 
-        //sets a restriction: only retrieve arr when particleIndexBelow is less than the array length.
-
+        //Vertical
         let particleIndexBelow = currentIndex + matrixWidth;
 
         let nextParticleIndexBelow = particleIndexBelow + 1;
 
-        //  console.log(particleIndexBelow);
-        //  console.log(arr.length);
-
         if (particleIndexBelow < arr.length) {
             let lowerDial = arr[particleIndexBelow];
-            // line(particle.x, particle.y, lowerDial.x, lowerDial.y);
             lL = lowerDial;
         }
 

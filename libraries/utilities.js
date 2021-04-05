@@ -143,8 +143,6 @@ function getQuad(arr, col, row, matrixWidth) {
     let lL;
     let lR;
 
-    console.log();
-
     if (currentIndex < arr.length) {
 
         // Retrieve the current and next particle from the array

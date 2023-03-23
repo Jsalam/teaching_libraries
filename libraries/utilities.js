@@ -267,7 +267,7 @@ function getSurroundingOneDim(arr, col, row, matrixWidth, theArray) {
         }
 
         if (theArray) {
-            theArray = resultArray;
+            return resultArray;
         } else {
             return result;
         }
